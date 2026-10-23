@@ -1,18 +1,13 @@
 import time
-import selenium
 import os
-import random
-from PIL import Image , ImageEnhance
 from selenium import webdriver 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import pandas as pd
 
 class Parser:
+
     def __init__(self, link):
         self.link = link
         self.driver = webdriver.Firefox()
@@ -62,16 +57,5 @@ class Parser:
                     df_1.to_csv("var.csv", index=False,  mode="a", sep=",", header=not os.path.isfile("var.csv"), encoding='utf-8')
         print(self.date_dict)    
 
-        
-       
-
-      
-
-
     def __del__ (self):
         print("zakoncheno")
-
-
-
-
-        сыендук = "пр"
