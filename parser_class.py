@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+import pandas as pd
 
 class Parser:
     def __init__(self, link):
@@ -18,6 +19,7 @@ class Parser:
         self.driver.get(self.link)
         self.info_list = []
         self.links_list = [] 
+        self.date_dict = {}
 
     def get_links_on_page(self):
         elements = self.driver.find_elements(By.CLASS_NAME, 'c-list__center')
@@ -38,15 +40,33 @@ class Parser:
         clickable_element.click()
 
     def get_info(self):
-        for link in self.links_list[:7]:
+        for link in self.links_list:
             self.driver.get(link + "#characteristics")
             time.sleep(6)
             # wait = WebDriverWait(self.driver, 10)
             # wait.until(EC.any_of((By.CLASS_NAME, "prod-tab-specifications__table")))
-            tabble_list = self.driver.find_elements(By.CLASS_NAME, 'prod-tab-specifications__table')
+            tabble_list = self.driver.find_elements(By.TAG_NAME, 'td')
             for table in tabble_list:
                 self.info_list.append(table.text)
             time.sleep(3)
+
+    def creating_csv_file(self):
+       
+        for i in range(0 , len(self.info_list)-1):
+            if (i % 2 == 0):
+                self.date_dict.update({self.info_list[i] : [self.info_list[i + 1]]})
+                if self.info_list[i] == 'Страна происхождения (производства)*':
+
+                    df_1 = pd.DataFrame(self.date_dict)
+                    print(df_1)
+                    df_1.to_csv("var.csv", index=False,  mode="a", sep=",", header=not os.path.isfile("var.csv"), encoding='utf-8')
+        print(self.date_dict)    
+
+        
+       
+
+      
+
 
     def __del__ (self):
         print("zakoncheno")
@@ -54,4 +74,4 @@ class Parser:
 
 
 
-        
+        сыендук = "пр"
